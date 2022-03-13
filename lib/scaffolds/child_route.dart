@@ -19,26 +19,19 @@ class ChildRouteScaffold extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   username,
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall
                 ),
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Repositories',
-                  style: TextStyle(
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    height: 1.5,
                   ),
                 ),
               ),
             ],
-          ),
-          titleTextStyle: const TextStyle(
-            color: Colors.white,
           ),
         ),
       body: body

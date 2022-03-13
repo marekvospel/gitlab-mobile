@@ -4,6 +4,8 @@ class GitlabColors {
   GitlabColors._();
 
   static const Color transparent = Color(0x00000000);
+  static const Color white = Color(0xffffffff);
+  static const Color black = Color(0xff000000);
 
   static const MaterialColor grey = MaterialColor(
     0xff999999,
@@ -61,6 +63,23 @@ class GitlabColors {
 
 ThemeData theme = ThemeData(
   primarySwatch: GitlabColors.orange,
+  scaffoldBackgroundColor: GitlabColors.white,
+  appBarTheme: AppBarTheme(
+    backgroundColor: GitlabColors.grey[800],
+    elevation: 0,
+    foregroundColor: GitlabColors.black,
+  ),
+  textTheme: TextTheme(
+    titleMedium: const TextStyle(
+      fontSize: 18,
+    ),
+    bodyMedium: const TextStyle(
+      color: GitlabColors.black
+    ),
+    bodySmall: TextStyle(
+      color: GitlabColors.grey[300],
+    )
+  )
 );
 
 ThemeData darkTheme = ThemeData(
@@ -68,5 +87,18 @@ ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: GitlabColors.grey[10],
   appBarTheme: AppBarTheme(
     backgroundColor: GitlabColors.grey[50],
-  )
+    elevation: 0,
+  ),
+  textTheme: TextTheme(
+    titleMedium: const TextStyle(
+      fontSize: 18,
+      color: GitlabColors.white,
+    ),
+    bodyMedium: const TextStyle(
+      color: GitlabColors.white
+    ),
+    bodySmall: TextStyle(
+      color: GitlabColors.grey[500],
+    )
+  ),
 );
