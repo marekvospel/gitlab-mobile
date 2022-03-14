@@ -7,7 +7,7 @@ class RepositoriesRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int repositoriesAmount = 2;
+    int repositoriesAmount = 4;
     String username = 'MarekVospel';
 
     return ChildRouteScaffold(
@@ -21,6 +21,7 @@ class RepositoriesRoute extends StatelessWidget {
           itemCount: repositoriesAmount,
           itemBuilder: (BuildContext context, int index) => ListRepository(
             username: username,
+            status: RepositoryStatus.values[index],
           ),
           separatorBuilder: (BuildContext context, int index) => const Divider(
             height: 0,

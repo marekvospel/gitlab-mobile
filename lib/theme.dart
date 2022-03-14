@@ -78,6 +78,7 @@ class GitlabColors {
 }
 
 ThemeData theme = ThemeData(
+  brightness: Brightness.light,
   primarySwatch: GitlabColors.orange,
   scaffoldBackgroundColor: GitlabColors.white,
   appBarTheme: AppBarTheme(
@@ -98,6 +99,7 @@ ThemeData theme = ThemeData(
 );
 
 ThemeData darkTheme = ThemeData(
+  brightness: Brightness.dark,
   primarySwatch: GitlabColors.orange,
   scaffoldBackgroundColor: GitlabColors.grey[10],
   appBarTheme: AppBarTheme(

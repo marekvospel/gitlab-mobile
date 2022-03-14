@@ -1,0 +1,6 @@
+<svg color="#fefefe" width="128" height="128" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+    <g fill-rule="nonzero">
+        <ellipse fill="none" stroke="currentColor" stroke-width="1.06" cx="6.9999976" cy="6.9999981" rx="6.4659724" ry="6.4659729" />
+        <path fill="currentColor" d="M5.2 3.8l4.9 4.9c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0L3.8 5.2c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0"/>
+    </g>
+</svg>
