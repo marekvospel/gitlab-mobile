@@ -59,6 +59,22 @@ class GitlabColors {
     },
   );
 
+  static const MaterialColor green = MaterialColor(
+    0xff2da160,
+    <int, Color>{
+      50: Color(0xff0a4020),
+      100: Color(0xff0d532a),
+      200: Color(0xff24663b),
+      300: Color(0xff217645),
+      400: Color(0xff108548),
+      500: Color(0xff2da160),
+      600: Color(0xff52b87a),
+      700: Color(0xff91d4a8),
+      800: Color(0xffc3e6cd),
+      900: Color(0xffecf4ee),
+      950: Color(0xfff1fdf6),
+    },
+  );
 }
 
 ThemeData theme = ThemeData(
@@ -73,9 +89,7 @@ ThemeData theme = ThemeData(
     titleMedium: const TextStyle(
       fontSize: 18,
     ),
-    bodyMedium: const TextStyle(
-      color: GitlabColors.black
-    ),
+    bodyMedium: const TextStyle(color: GitlabColors.black),
     bodySmall: TextStyle(
       color: GitlabColors.grey[300],
     ),
@@ -95,15 +109,11 @@ ThemeData darkTheme = ThemeData(
       fontSize: 18,
       color: GitlabColors.white,
     ),
-    bodyMedium: const TextStyle(
-      color: GitlabColors.white
-    ),
+    bodyMedium: const TextStyle(color: GitlabColors.white),
     bodySmall: TextStyle(
       color: GitlabColors.grey[500],
     ),
   ),
-  iconTheme: const IconThemeData(
-    color: GitlabColors.white
-  ),
+  iconTheme: const IconThemeData(color: GitlabColors.white),
   dividerColor: GitlabColors.grey[200],
 );

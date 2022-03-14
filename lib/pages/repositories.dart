@@ -12,11 +12,10 @@ class RepositoriesRoute extends StatelessWidget {
 
     return ChildRouteScaffold(
       username: username,
-      body:
-        NotificationListener<OverscrollIndicatorNotification>(
-          onNotification: (OverscrollIndicatorNotification overscroll) {
-            overscroll.disallowIndicator();
-            return false;
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (OverscrollIndicatorNotification overscroll) {
+          overscroll.disallowIndicator();
+          return false;
         },
         child: ListView.separated(
           itemCount: repositoriesAmount,

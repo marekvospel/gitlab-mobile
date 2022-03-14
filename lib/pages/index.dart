@@ -5,17 +5,15 @@ class IndexRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: IconButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/repositories');
-        },
-        icon: const Icon(Icons.alt_route),
-      )
-    );
+        appBar: AppBar(
+          title: const Text('Home'),
+        ),
+        body: IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/repositories');
+          },
+          icon: const Icon(Icons.alt_route),
+        ));
   }
 }
