@@ -78,8 +78,9 @@ ThemeData theme = ThemeData(
     ),
     bodySmall: TextStyle(
       color: GitlabColors.grey[300],
-    )
-  )
+    ),
+  ),
+  dividerColor: GitlabColors.grey[700],
 );
 
 ThemeData darkTheme = ThemeData(
@@ -99,6 +100,10 @@ ThemeData darkTheme = ThemeData(
     ),
     bodySmall: TextStyle(
       color: GitlabColors.grey[500],
-    )
+    ),
   ),
+  iconTheme: const IconThemeData(
+    color: GitlabColors.white
+  ),
+  dividerColor: GitlabColors.grey[200],
 );
