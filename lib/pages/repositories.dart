@@ -12,16 +12,23 @@ class RepositoriesRoute extends StatelessWidget {
 
     return ChildRouteScaffold(
       username: username,
-      body: ListView.separated(
-        itemCount: repositoriesAmount,
-        itemBuilder: (BuildContext context, int index) => ListRepository(
-          username: username,
+      body:
+        NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (OverscrollIndicatorNotification overscroll) {
+            overscroll.disallowIndicator();
+            return false;
+        },
+        child: ListView.separated(
+          itemCount: repositoriesAmount,
+          itemBuilder: (BuildContext context, int index) => ListRepository(
+            username: username,
+          ),
+          separatorBuilder: (BuildContext context, int index) => const Divider(
+            height: 0,
+            thickness: 1,
+          ),
         ),
-        separatorBuilder: (BuildContext context, int index) => const Divider(
-          height: 0,
-          thickness: 1,
-        ),
-      )
+      ),
     );
   }
 }

@@ -14,7 +14,15 @@ class _ListRepositoryState extends State<ListRepository> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("${widget.username} / Awesome project"),
+      title: Row(
+        children: [
+          Text('${widget.username} / '),
+          const Text(
+            'Awesome project',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
       onTap: () {},
     );
   }
