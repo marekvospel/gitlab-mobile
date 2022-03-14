@@ -22,6 +22,7 @@ class RepositoriesRoute extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) => ListRepository(
             username: username,
             status: RepositoryStatus.values[index],
+            private: index % 2 == 0,
           ),
           separatorBuilder: (BuildContext context, int index) => const Divider(
             height: 0,

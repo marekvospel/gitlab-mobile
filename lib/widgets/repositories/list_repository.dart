@@ -14,11 +14,13 @@ class ListRepository extends StatelessWidget {
       {Key? key,
       this.username = 'MarekVospel',
       this.name = 'Awesome Project',
+      this.private = false,
       this.status = RepositoryStatus.none})
       : super(key: key);
 
   final String username;
   final String name;
+  final bool private;
 
   final RepositoryStatus status;
 
@@ -34,7 +36,9 @@ class ListRepository extends StatelessWidget {
         icon = failedIcon;
         break;
       case (RepositoryStatus.cancelled):
-        icon = cancelledIcon;
+        icon = Theme.of(context).brightness == Brightness.dark
+            ? cancelledIconDark
+            : cancelledIcon;
         break;
       default:
         break;
@@ -45,9 +49,10 @@ class ListRepository extends StatelessWidget {
         children: [
           Text('$username / '),
           Text(
-            name,
+            '$name ',
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
+          private ? lockIcon : const Text(''),
         ],
       ),
       subtitle: Row(
