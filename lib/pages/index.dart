@@ -11,7 +11,7 @@ class IndexRoute extends StatelessWidget {
         ),
         body: IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/repositories');
+            Navigator.pushNamed(context, '/starred_repositories');
           },
           icon: const Icon(Icons.alt_route),
         ));

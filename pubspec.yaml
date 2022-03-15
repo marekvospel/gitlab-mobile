@@ -37,6 +37,7 @@ dependencies:
   graphql_flutter: ^5.0.1
   separated_column: ^2.0.0
   flutter_svg: ^1.0.3
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:

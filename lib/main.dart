@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-
-import 'package:gitlab_mobile/theme.dart';
 import 'package:gitlab_mobile/pages/index.dart';
-import 'package:gitlab_mobile/pages/repositories.dart';
+import 'package:gitlab_mobile/pages/starred_repositories.dart';
+import 'package:gitlab_mobile/theme.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() async {
   await initHiveForFlutter();
@@ -35,7 +34,8 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const IndexRoute(),
-          '/repositories': (context) => const RepositoriesRoute(),
+          '/starred_repositories': (context) =>
+              const StarredRepositoriesRoute(),
         });
   }
 }
