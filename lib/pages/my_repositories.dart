@@ -65,7 +65,8 @@ class MyRepositoriesRoute extends StatelessWidget {
     return ChildRouteScaffold(
       username: username,
       barTitle: 'Starred Repositories',
-      body: NotificationListener<OverscrollIndicatorNotification>(        onNotification: (OverscrollIndicatorNotification overscroll) {
+      body: NotificationListener<OverscrollIndicatorNotification>(
+        onNotification: (OverscrollIndicatorNotification overscroll) {
           overscroll.disallowIndicator();
           return false;
         },
