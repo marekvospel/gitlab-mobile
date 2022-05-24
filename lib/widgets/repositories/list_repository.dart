@@ -16,10 +16,10 @@ class ListRepository extends StatelessWidget {
     this.name = 'Awesome Project',
     this.private = false,
     this.status = RepositoryStatus.none,
-    this.stars = 0,
-    this.forks = 0,
-    this.pulls = 0,
-    this.issues = 0,
+    this.stars = -1,
+    this.forks = -1,
+    this.pulls = -1,
+    this.issues = -1,
   }) : super(key: key);
 
   final String username;
@@ -34,17 +34,17 @@ class ListRepository extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SvgPicture? icon;
+    SvgPicture? ciStatusIcon;
 
     switch (status) {
       case (RepositoryStatus.success):
-        icon = successIcon;
+        ciStatusIcon = successIcon;
         break;
       case (RepositoryStatus.failed):
-        icon = failedIcon;
+        ciStatusIcon = failedIcon;
         break;
       case (RepositoryStatus.cancelled):
-        icon = Theme.of(context).brightness == Brightness.dark
+        ciStatusIcon = Theme.of(context).brightness == Brightness.dark
             ? cancelledIconDark
             : cancelledIcon;
         break;
@@ -65,42 +65,50 @@ class ListRepository extends StatelessWidget {
       ),
       subtitle: Row(
         children: [
-          Row(
-            children: [
-              starIcon,
-              const SizedBox(width: 4),
-              Text('$stars'),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Row(
-            children: [
-              forkIcon,
-              const SizedBox(width: 4),
-              Text('$forks'),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Row(
-            children: [
-              gitMergeIcon,
-              const SizedBox(width: 4),
-              Text('$pulls'),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Row(
-            children: [
-              issuesIcon,
-              const SizedBox(width: 4),
-              Text('$issues'),
-            ],
-          ),
+          stars >= 0
+              ? Row(
+                  children: [
+                    starIcon,
+                    const SizedBox(width: 4),
+                    Text('$stars'),
+                  ],
+                )
+              : Row(),
+          SizedBox(width: stars >= 0 ? 8 : 0),
+          forks >= 0
+              ? Row(
+                  children: [
+                    forkIcon,
+                    const SizedBox(width: 4),
+                    Text('$forks'),
+                  ],
+                )
+              : Row(),
+          SizedBox(width: forks >= 0 ? 8 : 0),
+          pulls >= 0
+              ? Row(
+                  children: [
+                    gitMergeIcon,
+                    const SizedBox(width: 4),
+                    Text('$pulls'),
+                  ],
+                )
+              : Row(),
+          SizedBox(width: pulls >= 0 ? 8 : 0),
+          issues >= 0
+              ? Row(
+                  children: [
+                    issuesIcon,
+                    const SizedBox(width: 4),
+                    Text('$issues'),
+                  ],
+                )
+              : Row(),
         ],
       ),
-      trailing: icon != null
+      trailing: ciStatusIcon != null
           ? IconButton(
-              icon: icon,
+              icon: ciStatusIcon,
               onPressed: () {},
             )
           : null,

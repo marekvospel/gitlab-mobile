@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:gitlab_mobile/pages/index.dart';
+import 'package:gitlab_mobile/pages/login.dart';
 import 'package:gitlab_mobile/pages/starred_repositories.dart';
 import 'package:gitlab_mobile/theme.dart';
+import 'package:gitlab_mobile/util/auth.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() async {
   await initHiveForFlutter();
 
-  final HttpLink httpLink =
-      HttpLink('https://gitlab.polygon.school/api/graphql');
-
-  final AuthLink authLink = AuthLink(
-    getToken: () async => 'Bearer ',
-  );
-
-  final Link link = authLink.concat(httpLink);
+  final Link link = await getGraphQLLink();
 
   ValueNotifier<GraphQLClient> client = ValueNotifier(
       GraphQLClient(link: link, cache: GraphQLCache(store: HiveStore())));
 
-  runApp(GraphQLProvider(client: client, child: const MyApp()));
+  runApp(GraphQLProvider(
+      client: client,
+      child: MyApp(
+        graphql: client,
+      )));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.graphql}) : super(key: key);
+  final ValueNotifier<GraphQLClient> graphql;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +36,9 @@ class MyApp extends StatelessWidget {
           '/': (context) => const IndexRoute(),
           '/starred_repositories': (context) =>
               const StarredRepositoriesRoute(),
+          '/login': (context) => LoginRoute(
+                graphql: graphql,
+              ),
         });
   }
 }

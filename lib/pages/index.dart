@@ -9,11 +9,18 @@ class IndexRoute extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Home'),
         ),
-        body: IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/starred_repositories');
-          },
-          icon: const Icon(Icons.alt_route),
-        ));
+        body: ListView(children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/starred_repositories');
+            },
+            icon: const Icon(Icons.alt_route),
+          ),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/login');
+              },
+              icon: const Icon(Icons.lock)),
+        ]));
   }
 }
