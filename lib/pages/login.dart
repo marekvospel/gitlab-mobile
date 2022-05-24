@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginRoute extends StatelessWidget {
@@ -12,9 +14,10 @@ class LoginRoute extends StatelessWidget {
   static const String _charset =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
 
-  static String _createCodeVerifier() {
+  static String _createCodeVerifier(int length) {
     return List.generate(
-        128, (i) => _charset[Random.secure().nextInt(_charset.length)]).join();
+            length, (i) => _charset[Random.secure().nextInt(_charset.length)])
+        .join();
   }
 
   @override
@@ -24,52 +27,47 @@ class LoginRoute extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () async {
-            final codeVerifier = _createCodeVerifier();
+            final prefs = await SharedPreferences.getInstance();
+            final codeVerifier = _createCodeVerifier(128);
+            final state = _createCodeVerifier(32);
+
+            const String url = 'https://gitlab.com';
+            const String clientId =
+                '6058016ae83159fd993543039d7a595b59a851918b97f81a1ceba717dd888919';
+
+            await prefs.setString(
+              'codeVerifier:$state',
+              jsonEncode({
+                'client_id': clientId,
+                'verifier': codeVerifier,
+                'url': url,
+              }),
+            );
 
             final grant = oauth2.AuthorizationCodeGrant(
-              '6058016ae83159fd993543039d7a595b59a851918b97f81a1ceba717dd888919',
-              Uri.parse('https://gitlab.com/oauth/authorize/'),
-              Uri.parse('https://gitlab.com/oauth/token/'),
+              clientId,
+              Uri.parse('$url/oauth/authorize/'),
+              Uri.parse('$url/oauth/token/'),
               codeVerifier: codeVerifier,
             );
 
             final authorizationUrl = grant.getAuthorizationUrl(
-                Uri.parse('gitlabmobile://oauth'),
-                scopes: [
-                  'api',
-                  'read_api',
-                  'read_user',
-                  'read_repository',
-                ]);
+              Uri.parse('gitlabmobile://oauth'),
+              scopes: [
+                'api',
+                'read_api',
+                'read_user',
+                'read_repository',
+              ],
+              state: state,
+            );
+
+            debugPrint(authorizationUrl.toString());
 
             await launchUrl(
               authorizationUrl,
               mode: LaunchMode.externalApplication,
             );
-
-            // final prefs = await SharedPreferences.getInstance();
-
-            // TODO: get token from https://gitlab.com/oauth/token
-            // await prefs.setString('token', '');
-            // await prefs.setString('url', 'https://gitlab.com');
-            // await prefs.setString('refresh_token', '');
-            // await prefs.setInt('expire', 0);
-            // await prefs.setString('client_id', '');
-
-            /*
-            final client = GraphQLClient(
-              link: await getGraphQLLink(),
-              cache: GraphQLCache(store: HiveStore()),
-            );
-
-            graphql.value = client;
-
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
-              Navigator.pushNamed(context, '/');
-            }
-             */
           },
           icon: const Icon(Icons.lock_outlined),
         )
