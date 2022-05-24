@@ -36,6 +36,7 @@ class ListRepository extends StatelessWidget {
   Widget build(BuildContext context) {
     SvgPicture? ciStatusIcon;
 
+    // TODO: ci in progress icon
     switch (status) {
       case (RepositoryStatus.success):
         ciStatusIcon = successIcon;

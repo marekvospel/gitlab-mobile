@@ -1,11 +1,21 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:gitlab_mobile/util/auth.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:oauth2/oauth2.dart' as oauth2;
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginRoute extends StatelessWidget {
   const LoginRoute({Key? key, required this.graphql}) : super(key: key);
   final ValueNotifier<GraphQLClient> graphql;
+
+  static const String _charset =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+
+  static String _createCodeVerifier() {
+    return List.generate(
+        128, (i) => _charset[Random.secure().nextInt(_charset.length)]).join();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +24,30 @@ class LoginRoute extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () async {
-            final prefs = await SharedPreferences.getInstance();
+            final codeVerifier = _createCodeVerifier();
+
+            final grant = oauth2.AuthorizationCodeGrant(
+              '6058016ae83159fd993543039d7a595b59a851918b97f81a1ceba717dd888919',
+              Uri.parse('https://gitlab.com/oauth/authorize/'),
+              Uri.parse('https://gitlab.com/oauth/token/'),
+              codeVerifier: codeVerifier,
+            );
+
+            final authorizationUrl = grant.getAuthorizationUrl(
+                Uri.parse('gitlabmobile://oauth'),
+                scopes: [
+                  'api',
+                  'read_api',
+                  'read_user',
+                  'read_repository',
+                ]);
+
+            await launchUrl(
+              authorizationUrl,
+              mode: LaunchMode.externalApplication,
+            );
+
+            // final prefs = await SharedPreferences.getInstance();
 
             // TODO: get token from https://gitlab.com/oauth/token
             // await prefs.setString('token', '');
@@ -23,6 +56,7 @@ class LoginRoute extends StatelessWidget {
             // await prefs.setInt('expire', 0);
             // await prefs.setString('client_id', '');
 
+            /*
             final client = GraphQLClient(
               link: await getGraphQLLink(),
               cache: GraphQLCache(store: HiveStore()),
@@ -35,6 +69,7 @@ class LoginRoute extends StatelessWidget {
             } else {
               Navigator.pushNamed(context, '/');
             }
+             */
           },
           icon: const Icon(Icons.lock_outlined),
         )

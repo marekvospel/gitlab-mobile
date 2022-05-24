@@ -18,6 +18,7 @@ build:
     when: on_success
     paths:
       - build
+    expire_in: 1 week
 
 analyze:
   image: cirrusci/flutter

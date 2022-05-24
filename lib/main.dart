@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:gitlab_mobile/pages/index.dart';
 import 'package:gitlab_mobile/pages/login.dart';
@@ -10,15 +11,19 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 void main() async {
   await initHiveForFlutter();
 
+  AppLinks().uriLinkStream.listen((uri) {
+    debugPrint(uri.toString());
+  });
+
+  String initialRoute = '/';
+  if (await isTokenExpired() && !await refreshToken()) {
+    initialRoute = '/login';
+  }
+
   final Link link = await getGraphQLLink();
 
   ValueNotifier<GraphQLClient> client = ValueNotifier(
       GraphQLClient(link: link, cache: GraphQLCache(store: HiveStore())));
-
-  String initialRoute = '/';
-  if (await isTokenExpired()) {
-    initialRoute = '/login';
-  }
 
   runApp(GraphQLProvider(
       client: client,
