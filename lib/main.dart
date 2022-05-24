@@ -15,16 +15,28 @@ void main() async {
   ValueNotifier<GraphQLClient> client = ValueNotifier(
       GraphQLClient(link: link, cache: GraphQLCache(store: HiveStore())));
 
+  String initialRoute = '/';
+  if (await isTokenExpired()) {
+    initialRoute = '/login';
+  }
+
   runApp(GraphQLProvider(
       client: client,
       child: MyApp(
         graphql: client,
+        initialRoute: initialRoute,
       )));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.graphql}) : super(key: key);
   final ValueNotifier<GraphQLClient> graphql;
+  final String initialRoute;
+
+  const MyApp({
+    Key? key,
+    required this.graphql,
+    this.initialRoute = '/',
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +44,7 @@ class MyApp extends StatelessWidget {
         title: 'Gitlab Mobile',
         theme: theme,
         darkTheme: darkTheme,
-        initialRoute: '/',
+        initialRoute: initialRoute,
         routes: {
           '/': (context) => const IndexRoute(),
           '/repositories/starred': (context) =>

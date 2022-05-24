@@ -13,25 +13,31 @@ class LoginRoute extends StatelessWidget {
         body: ListView(
       children: [
         IconButton(
-            onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
+          onPressed: () async {
+            final prefs = await SharedPreferences.getInstance();
 
-              // TODO: get token from https://gitlab.com/oauth/token
-              await prefs.setString('token', '');
+            // TODO: get token from https://gitlab.com/oauth/token
+            // await prefs.setString('token', '');
+            // await prefs.setString('url', 'https://gitlab.com');
+            // await prefs.setString('refresh_token', '');
+            // await prefs.setInt('expire', 0);
+            // await prefs.setString('client_id', '');
 
-              final client = GraphQLClient(
-                  link: await getGraphQLLink(),
-                  cache: GraphQLCache(store: HiveStore()));
+            final client = GraphQLClient(
+              link: await getGraphQLLink(),
+              cache: GraphQLCache(store: HiveStore()),
+            );
 
-              graphql.value = client;
+            graphql.value = client;
 
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              } else {
-                Navigator.pushNamed(context, '/');
-              }
-            },
-            icon: const Icon(Icons.lock_outlined))
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            } else {
+              Navigator.pushNamed(context, '/');
+            }
+          },
+          icon: const Icon(Icons.lock_outlined),
+        )
       ],
     ));
   }
