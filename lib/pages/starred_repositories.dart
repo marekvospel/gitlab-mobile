@@ -107,7 +107,7 @@ class StarredRepositoriesRoute extends StatelessWidget {
         }
 
         List? repositories =
-            result.data?['currentUser']?['projectMemberships']?['nodes'];
+            result.data?['currentUser']?['starredProjects']?['nodes'];
 
         if (repositories == null || repositories.isEmpty) {
           return ChildRouteScaffold(
