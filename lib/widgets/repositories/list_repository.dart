@@ -12,13 +12,13 @@ enum RepositoryStatus {
 class ListRepository extends StatelessWidget {
   const ListRepository({
     Key? key,
-    this.username = 'MarekVospel',
-    this.name = 'Awesome Project',
+    this.username = 'Unknown',
+    this.name = 'Unknown',
     this.private = false,
     this.status = RepositoryStatus.none,
     this.stars = -1,
     this.forks = -1,
-    this.pulls = -1,
+    this.pulls = 0,
     this.issues = -1,
   }) : super(key: key);
 
@@ -85,7 +85,7 @@ class ListRepository extends StatelessWidget {
                 )
               : Row(),
           SizedBox(width: forks >= 0 ? 8 : 0),
-          pulls >= 0
+          pulls > 0
               ? Row(
                   children: [
                     gitMergeIcon,
@@ -94,7 +94,7 @@ class ListRepository extends StatelessWidget {
                   ],
                 )
               : Row(),
-          SizedBox(width: pulls >= 0 ? 8 : 0),
+          SizedBox(width: pulls > 0 ? 8 : 0),
           issues >= 0
               ? Row(
                   children: [

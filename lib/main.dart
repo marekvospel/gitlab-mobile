@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gitlab_mobile/pages/index.dart';
 import 'package:gitlab_mobile/pages/login.dart';
+import 'package:gitlab_mobile/pages/my_repositories.dart';
 import 'package:gitlab_mobile/pages/starred_repositories.dart';
 import 'package:gitlab_mobile/theme.dart';
 import 'package:gitlab_mobile/util/auth.dart';
@@ -34,8 +35,9 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const IndexRoute(),
-          '/starred_repositories': (context) =>
+          '/repositories/starred': (context) =>
               const StarredRepositoriesRoute(),
+          '/repositories/my': (context) => const MyRepositoriesRoute(),
           '/login': (context) => LoginRoute(
                 graphql: graphql,
               ),

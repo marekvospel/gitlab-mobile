@@ -4,8 +4,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../widgets/repositories/list_repository.dart';
 
-class StarredRepositoriesRoute extends StatelessWidget {
-  const StarredRepositoriesRoute({Key? key}) : super(key: key);
+class MyRepositoriesRoute extends StatelessWidget {
+  const MyRepositoriesRoute({Key? key}) : super(key: key);
 
   RepositoryStatus pipelineToStatus(List? nodes) {
     if (nodes == null || nodes.isEmpty) return RepositoryStatus.none;
@@ -32,26 +32,28 @@ class StarredRepositoriesRoute extends StatelessWidget {
       query {
         currentUser {
           username,
-          starredProjects {
+          projectMemberships {
             nodes {
-              name,
-              namespace {
-                name
-              },
-              group {
-                name
-              },
-              fullPath,
-              visibility,
-              starCount,
-              forksCount,
-              openIssuesCount,
-              mergeRequests(state: opened) {
-                count
-              },
-              pipelines(first: 1) {
-                nodes {
-                  status,
+              project {
+                name,
+                namespace {
+                  name
+                },
+                group {
+                  name
+                },
+                fullPath,
+                visibility,
+                starCount,
+                forksCount,
+                openIssuesCount,
+                mergeRequests(state: opened) {
+                  count
+                },
+                pipelines(first: 1) {
+                  nodes {
+                    status,
+                  }
                 }
               }
             }
@@ -63,8 +65,7 @@ class StarredRepositoriesRoute extends StatelessWidget {
     return ChildRouteScaffold(
       username: username,
       barTitle: 'Starred Repositories',
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (OverscrollIndicatorNotification overscroll) {
+      body: NotificationListener<OverscrollIndicatorNotification>(        onNotification: (OverscrollIndicatorNotification overscroll) {
           overscroll.disallowIndicator();
           return false;
         },
@@ -96,17 +97,21 @@ class StarredRepositoriesRoute extends StatelessWidget {
             return ListView.separated(
               itemCount: repositories.length,
               itemBuilder: (BuildContext _context, int index) => ListRepository(
-                username: repositories[index]?['group']?['name'] ??
-                    repositories[index]?['namespace']?['name'] ??
+                username: repositories[index]?['project']?['group']?['name'] ??
+                    repositories[index]?['project']?['namespace']?['name'] ??
                     'Unknown',
-                name: repositories[index]?['name'],
+                name: repositories[index]?['project']?['name'],
                 status: pipelineToStatus(
-                    repositories[index]?['pipelines']?['nodes']),
-                private: repositories[index]?['visibility'] == 'private',
-                stars: repositories[index]?['starCount'] ?? -1,
-                forks: repositories[index]?['forksCount'] ?? -1,
-                pulls: repositories[index]?['mergeRequests']?['count'] ?? 0,
-                issues: repositories[index]?['openIssuesCount'] ?? -1,
+                    repositories[index]?['project']?['pipelines']?['nodes']),
+                private:
+                    repositories[index]?['project']?['visibility'] == 'private',
+                stars: repositories[index]?['project']?['starCount'] ?? -1,
+                forks: repositories[index]?['project']?['forksCount'] ?? -1,
+                pulls: repositories[index]?['project']?['mergeRequests']
+                        ?['count'] ??
+                    0,
+                issues:
+                    repositories[index]?['project']?['openIssuesCount'] ?? -1,
               ),
               separatorBuilder: (BuildContext _context, int _index) =>
                   const Divider(

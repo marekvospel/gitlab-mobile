@@ -10,17 +10,24 @@ class IndexRoute extends StatelessWidget {
           title: const Text('Home'),
         ),
         body: ListView(children: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/starred_repositories');
+          ListTile(
+            title: const Text('My repositories'),
+            onTap: () {
+              Navigator.pushNamed(context, '/repositories/my');
             },
-            icon: const Icon(Icons.alt_route),
           ),
-          IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/login');
-              },
-              icon: const Icon(Icons.lock)),
+          ListTile(
+            title: const Text('Starred repositories'),
+            onTap: () {
+              Navigator.pushNamed(context, '/repositories/starred');
+            },
+          ),
+          ListTile(
+            title: const Text('Login'),
+            onTap: () {
+              Navigator.pushNamed(context, '/login');
+            },
+          )
         ]));
   }
 }

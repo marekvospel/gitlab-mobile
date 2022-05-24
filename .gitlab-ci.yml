@@ -1,0 +1,28 @@
+
+cache:
+  paths:
+    - .pub-cache/global_packages
+
+stages:
+  - build
+  - test
+
+build:
+  image: cirrusci/flutter
+  stage: build
+  before_script:
+    - flutter pub get
+  script:
+    - flutter build apk
+  artifacts:
+    when: on_success
+    paths:
+      - build
+
+analyze:
+  image: cirrusci/flutter
+  stage: test
+  before_script:
+    - flutter pub get
+  script:
+    - flutter analyze
