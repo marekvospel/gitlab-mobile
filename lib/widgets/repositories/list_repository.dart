@@ -18,7 +18,7 @@ class ListRepository extends StatelessWidget {
     this.status = RepositoryStatus.none,
     this.stars = -1,
     this.forks = -1,
-    this.pulls = 0,
+    this.pulls = -1,
     this.issues = -1,
   }) : super(key: key);
 
@@ -85,7 +85,7 @@ class ListRepository extends StatelessWidget {
                 )
               : Row(),
           SizedBox(width: forks >= 0 ? 8 : 0),
-          pulls > 0
+          pulls >= 0
               ? Row(
                   children: [
                     gitMergeIcon,
@@ -94,7 +94,7 @@ class ListRepository extends StatelessWidget {
                   ],
                 )
               : Row(),
-          SizedBox(width: pulls > 0 ? 8 : 0),
+          SizedBox(width: pulls >= 0 ? 8 : 0),
           issues >= 0
               ? Row(
                   children: [

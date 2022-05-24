@@ -24,11 +24,36 @@ class MyRepositoriesRoute extends StatelessWidget {
     return RepositoryStatus.none;
   }
 
+  Widget repositoriesList(List repositories) {
+    return ListView.separated(
+        itemBuilder: (BuildContext _context, int index) {
+          final dynamic repository = repositories[index]?['project'];
+
+          return ListRepository(
+            username: repository?['group']?['name'] ??
+                repository?['namespace']?['name'] ??
+                'Unknown',
+            name: repository?['name'],
+            status: pipelineToStatus(repository?['pipelines']?['nodes']),
+            private: repository?['visibility'] == 'private',
+            stars: repository?['starCount'] ?? -1,
+            forks: repository?['forksCount'] ?? -1,
+            pulls: repository?['openIssuesCount'] != null
+                ? repository?['mergeRequests']?['count'] ?? -1
+                : -1,
+            issues: repository?['openIssuesCount'] ?? -1,
+          );
+        },
+        separatorBuilder: (BuildContext _context, int _index) => const Divider(
+              height: 0,
+              thickness: 1,
+            ),
+        itemCount: repositories.length);
+  }
+
   @override
   Widget build(BuildContext context) {
-    String username = 'marekvospel';
-
-    String starredReposDocument = '''
+    String myReposDocument = '''
       query {
         currentUser {
           username,
@@ -42,7 +67,6 @@ class MyRepositoriesRoute extends StatelessWidget {
                 group {
                   name
                 },
-                fullPath,
                 visibility,
                 starCount,
                 forksCount,
@@ -62,67 +86,46 @@ class MyRepositoriesRoute extends StatelessWidget {
       }
     ''';
 
-    return ChildRouteScaffold(
-      username: username,
-      barTitle: 'Starred Repositories',
-      body: NotificationListener<OverscrollIndicatorNotification>(
-        onNotification: (OverscrollIndicatorNotification overscroll) {
-          overscroll.disallowIndicator();
-          return false;
-        },
-        child: Query(
-          options: QueryOptions(document: gql(starredReposDocument)),
-          builder: (QueryResult result,
-              {VoidCallback? refetch, FetchMore? fetchMore}) {
-            if (result.hasException) {
-              return Center(
+    return Query(
+      options: QueryOptions(document: gql(myReposDocument)),
+      builder: (QueryResult<dynamic> result,
+          {VoidCallback? refetch, FetchMore? fetchMore}) {
+        if (result.hasException) {
+          return ChildRouteScaffold(
+              username: 'Error',
+              barTitle: 'My Repositories',
+              body: Center(
                 child: Text(result.exception.toString()),
-              );
-            }
+              ));
+        }
 
-            if (result.isLoading) {
-              return const Center(
+        if (result.isLoading) {
+          return const ChildRouteScaffold(
+              username: 'Loading...',
+              barTitle: 'My Repositories',
+              body: Center(
                 child: Text('Loading...'),
-              );
-            }
+              ));
+        }
 
-            List? repositories =
-                result.data?['currentUser']?['projectMemberships']?['nodes'];
+        List? repositories =
+            result.data?['currentUser']?['projectMemberships']?['nodes'];
 
-            if (repositories == null || repositories.isEmpty) {
-              return const Center(
-                child: Text('No repositories'),
-              );
-            }
+        if (repositories == null || repositories.isEmpty) {
+          return ChildRouteScaffold(
+            username:
+                result.data?['currentUser']?['username'] ?? 'Unknown user',
+            barTitle: 'My Repositories',
+            body: const Center(child: Text('No repositories')),
+          );
+        }
 
-            return ListView.separated(
-              itemCount: repositories.length,
-              itemBuilder: (BuildContext _context, int index) => ListRepository(
-                username: repositories[index]?['project']?['group']?['name'] ??
-                    repositories[index]?['project']?['namespace']?['name'] ??
-                    'Unknown',
-                name: repositories[index]?['project']?['name'],
-                status: pipelineToStatus(
-                    repositories[index]?['project']?['pipelines']?['nodes']),
-                private:
-                    repositories[index]?['project']?['visibility'] == 'private',
-                stars: repositories[index]?['project']?['starCount'] ?? -1,
-                forks: repositories[index]?['project']?['forksCount'] ?? -1,
-                pulls: repositories[index]?['project']?['mergeRequests']
-                        ?['count'] ??
-                    0,
-                issues:
-                    repositories[index]?['project']?['openIssuesCount'] ?? -1,
-              ),
-              separatorBuilder: (BuildContext _context, int _index) =>
-                  const Divider(
-                height: 0,
-                thickness: 1,
-              ),
-            );
-          },
-        ),
-      ),
+        return ChildRouteScaffold(
+          username: result.data?['currentUser']?['username'] ?? 'Unknown user',
+          barTitle: 'My Repositories',
+          body: repositoriesList(repositories),
+        );
+      },
     );
   }
 }
